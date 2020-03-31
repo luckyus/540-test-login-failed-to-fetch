@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="UTF-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<title>Document</title>
+	</head>
+	<body style="font-family: Arial, Helvetica, sans-serif;">
+		<h2>Login Test <span id="cert-warning"></span></h2>
+		<h3 id="url">url: ---</h3>
+		<div>
+			<button onclick="onStart()">Start</button>
+			<button onclick="onStop()">Stop</button>
+			<p>
+				<table>
+					<tr>
+						<td>Total Count:</td>
+						<td id="totalCount">---</td>
+					</tr>
+					<tr>
+						<td>Success Count:</td>
+						<td id="successCount">---</td>
+					</tr>
+					<tr>
+						<td>Failed Count:</td>
+						<td id="failedCount">---</td>
+					</tr>
+				</table>
+			</p>
+			<p>
+				<div>Token:</div>
+				<div style="max-width: 600px; word-wrap:break-word;" id="token">---</div>
+			</p>
+		</div>
+	</body>
+	<script>
+		let cont = true;
+		const onStart = async () => {
+			let totalCount = 0;
+			let successCount = 0;
+			let failedCount = 0;
+			cont = true;
+			const url = "https://61.92.145.46:5401/api/auth/login";
+			document.querySelector("#url").innerHTML = "url: " + url;
+			while(cont) {
+				totalCount++;
+				document.querySelector("#totalCount").innerHTML = totalCount;
+				try {
+					const response = await fetchLogin(url, "admin", "123");
+					const token = await response.text();
+					successCount++;
+					document.querySelector("#successCount").innerHTML = successCount;
+					document.querySelector("#token").innerHTML = token;
+
+				} catch (error) {
+					failedCount++;
+					document.querySelector("#failedCount").innerHTML = failedCount + " - " + error;
+					console.log(error)
+				}
+				await new Promise(r => setTimeout(r, 1000));
+			}
+		};
+		const onStop = () => { cont = false;}
+		const fetchLogin = async (url, username, password) => {
+			const method = "POST";
+			const body = JSON.stringify({ username, password });
+			const headers = { "Content-Type": "application/json; charset=UTF-8" };
+			const response = await fetch(url, { method, body, headers });
+			return response;
+		};
+	</script>
+</html>

@@ -1,0 +1,4 @@
+{
+	"appService.defaultWebAppToDeploy": "/subscriptions/f2aaaf53-c0ab-48ea-aec6-38b907134e5d/resourceGroups/lucky/providers/Microsoft.Web/sites/540-test-login-failed-to-fetch",
+	"appService.deploySubpath": ""
+}
